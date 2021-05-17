@@ -1,0 +1,6 @@
+src
+tsconfig.json
+.eslintrc.js
+.node-version
+.*ignore
+*.tgz

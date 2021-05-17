@@ -1,4 +1,10 @@
-import fs from 'fs/promises'
+import fs from 'fs'
+import { promisify } from 'util'
+
+const fsp = {
+    readFile: promisify(fs.readFile),
+    writeFile: promisify(fs.writeFile)
+}
 
 export interface Scripts {
     [name: string]: string
@@ -10,7 +16,7 @@ export interface PackageJson {
 }
 
 export async function load(path: string): Promise<PackageJson> {
-    const data = await fs.readFile(path).then(buffer => buffer.toString('utf8'))
+    const data = await fsp.readFile(path).then((buffer: Buffer) => buffer.toString('utf8'))
     return JSON.parse(data) as PackageJson
 }
 
@@ -21,7 +27,7 @@ export async function save(path: string, pkgJson: PackageJson | unknown, dryRun:
         process.stdout.write('\n')
         return
     }
-    await fs.writeFile(path, json)
+    await fsp.writeFile(path, json)
 }
 
 const packageJson = {

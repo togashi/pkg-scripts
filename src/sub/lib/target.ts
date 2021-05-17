@@ -1,9 +1,13 @@
-import fs from 'fs/promises'
+import fs from 'fs'
+import { promisify } from 'util'
+const fsp = {
+    stat: promisify(fs.stat)
+}
 
 export async function get(spec: string): Promise<string> {
-    const s = await fs.stat(spec)
+    const s = await fsp.stat(spec)
     if (s.isDirectory()) {
-        return await get(`${spec}/package.json`.replace(/\/\//g, '/'))
+        return get(`${spec}/package.json`.replace(/\/\//g, '/'))
     }
     if (s.isFile()) {
         return spec

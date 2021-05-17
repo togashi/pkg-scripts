@@ -16,6 +16,4 @@ cli.version('20210517')
     .command('remove', 'remove script', { executableFile: getPath('sub/rm.js') }).alias('rm')
     .command('copy', 'copy script', { executableFile: getPath('sub/cp.js') }).alias('cp')
 
-console.debug(getPath('sub/ls.js'))
-
 cli.parse(process.argv)
